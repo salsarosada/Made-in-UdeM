@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,12 @@ public class GameManager : MonoBehaviour
     public AudioClip[] backgroundMusics; // Array de música de fondo para cada estado.
     private AudioSource audioSource; // Fuente de audio para reproducir la música.
 
-
+    public Image mentalHealthImage;
+    public Image averageImage;
+    public Image fatigueImage;
+    public Image mentalHealthImageTrans;
+    public Image averageImageTrans;
+    public Image fatigueImageTrans;
 
     private void Start()
     {
@@ -57,6 +63,14 @@ public class GameManager : MonoBehaviour
         mentalHealthText.text = "Salud Mental: " + mentalHealth;
         fatigueText.text = "Cansancio: " + fatigue;
         averageText.text = "Promedio: " + average.ToString("F1"); // Mostramos el promedio con 1 decimal.
+
+        /*mentalHealthImage.fillAmount = mentalHealth / 100f;
+        averageImage.fillAmount = average / 5f;
+        fatigueImage.fillAmount = fatigue / 100f;*/
+
+        StartCoroutine(UpdateImageFill(mentalHealthImageTrans, mentalHealth / 100f));
+        StartCoroutine(UpdateImageFill(averageImageTrans, average / 5f));
+        StartCoroutine(UpdateImageFill(fatigueImageTrans, fatigue / 100f));
     }
     private void ShowTransition(int mentalHealthChange, int fatigueChange, float averageChange)
     {
@@ -66,6 +80,10 @@ public class GameManager : MonoBehaviour
         averageChangeText.text = averageChange > 0 ? "+" + averageChange.ToString("F1") : averageChange.ToString("F1");
 
         transitionCanvas.SetActive(true); // Mostrar el Canvas.
+
+        StartCoroutine(UpdateImageFill(mentalHealthImage, mentalHealth / 100f));
+        StartCoroutine(UpdateImageFill(averageImage, average / 5f));
+        StartCoroutine(UpdateImageFill(fatigueImage, fatigue / 100f));
 
         // Desactivar el Canvas después de unos segundos.
         Invoke("HideTransition", 2f); // 2 segundos como ejemplo.
@@ -114,5 +132,24 @@ public class GameManager : MonoBehaviour
                 audioSource.Play();
             }
         }
+    }
+
+    private IEnumerator UpdateImageFill(Image image, float targetFill)
+    {
+        float initialFill = image.fillAmount;
+        float elapsedTime = 0f;
+        float duration = 1f; // Duración de la transición
+
+        while (elapsedTime < duration)
+        {
+            float fillAmount = Mathf.Lerp(initialFill, targetFill, elapsedTime / duration);
+            image.fillAmount = fillAmount;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Asegurarse de que la imagen tenga el valor exacto al final
+        image.fillAmount = targetFill;
     }
 }
