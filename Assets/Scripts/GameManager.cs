@@ -160,7 +160,17 @@ public class GameManager : MonoBehaviour
     {
         if(i ==1)
         {
-                i = Random.Range(1, 3);                
+                i = Random.Range(1, 3); 
+                if(i == 1)
+            {
+                average += 7;
+
+            }
+            else
+            {
+                average -= 7;
+                mentalHealth -= 7;
+            }
         }
         conseTxt.SetText(consecuencias[i]);
     }
