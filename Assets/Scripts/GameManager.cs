@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +13,6 @@ public class GameManager : MonoBehaviour
     public Text mentalHealthText;
     public Text fatigueText;
     public Text averageText; // Texto para el promedio.
-    public TMP_Text conseTxt;
-    public string[] consecuencias;
 
     private int currentQuestionIndex = 0;
 
@@ -154,14 +151,5 @@ public class GameManager : MonoBehaviour
 
         // Asegurarse de que la imagen tenga el valor exacto al final
         image.fillAmount = targetFill;
-    }
-
-    public void Consecuencia(int i)
-    {
-        if(i ==1)
-        {
-                i = Random.Range(1, 3);                
-        }
-        conseTxt.SetText(consecuencias[i]);
     }
 }
