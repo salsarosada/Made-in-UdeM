@@ -5,7 +5,6 @@ public class DecisionButton : MonoBehaviour
     public int mentalHealthChange;
     public int fatigueChange;
     public float averageChange;
-    public int nextQuestionIndex; // Asegúrate de que esta variable está definida.    
 
     public GameManager gameManager;
 
