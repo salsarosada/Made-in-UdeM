@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,6 +31,13 @@ public class GameManager : MonoBehaviour
     public Image averageImageTrans;
     public Image fatigueImageTrans;
 
+    public TMP_Text conseTxt;
+    public string[] consecuencias;
+    public GameObject panelIdiomas;
+    public GameObject panelEnfasis;
+    public TMP_Text enfasisTxt;
+
+
     private void Start()
     {
         UpdateUI();
@@ -49,7 +57,7 @@ public class GameManager : MonoBehaviour
 
         mentalHealth = Mathf.Clamp(mentalHealth, 0, 100);
         fatigue = Mathf.Clamp(fatigue, 0, 100);
-        average = Mathf.Clamp(average, 0.0f, 5.0f); // Nos aseguramos de que el promedio esté entre 0 y 5.
+        average = Mathf.Clamp(average, 0, 100f); // Nos aseguramos de que el promedio esté entre 0 y 5.
         ShowTransition(mentalHealthChange, fatigueChange, averageChange);
 
         UpdateUI();
@@ -69,7 +77,7 @@ public class GameManager : MonoBehaviour
         fatigueImage.fillAmount = fatigue / 100f;*/
 
         StartCoroutine(UpdateImageFill(mentalHealthImageTrans, mentalHealth / 100f));
-        StartCoroutine(UpdateImageFill(averageImageTrans, average / 5f));
+        StartCoroutine(UpdateImageFill(averageImageTrans, average / 100f));
         StartCoroutine(UpdateImageFill(fatigueImageTrans, fatigue / 100f));
     }
     private void ShowTransition(int mentalHealthChange, int fatigueChange, float averageChange)
@@ -77,16 +85,16 @@ public class GameManager : MonoBehaviour
         // Actualizar los textos con los cambios.
         mentalHealthChangeText.text = mentalHealthChange > 0 ? "+" + mentalHealthChange : mentalHealthChange.ToString();
         fatigueChangeText.text = fatigueChange > 0 ? "+" + fatigueChange : fatigueChange.ToString();
-        averageChangeText.text = averageChange > 0 ? "+" + averageChange.ToString("F1") : averageChange.ToString("F1");
+        averageChangeText.text = averageChange > 0 ? "+" + averageChange.ToString() : averageChange.ToString();
 
         transitionCanvas.SetActive(true); // Mostrar el Canvas.
 
         StartCoroutine(UpdateImageFill(mentalHealthImage, mentalHealth / 100f));
-        StartCoroutine(UpdateImageFill(averageImage, average / 5f));
+        StartCoroutine(UpdateImageFill(averageImage, average / 100f));
         StartCoroutine(UpdateImageFill(fatigueImage, fatigue / 100f));
 
         // Desactivar el Canvas después de unos segundos.
-        Invoke("HideTransition", 2f); // 2 segundos como ejemplo.
+        Invoke("HideTransition", 5f); // 2 segundos como ejemplo.
     }
 
     private void HideTransition()
@@ -169,6 +177,56 @@ public class GameManager : MonoBehaviour
                 mentalHealth -= 7;
             }
         }
+
+        if(i == 13)
+        {
+            i = Random.Range(13, 15);
+            if (i == 13)
+            {
+                mentalHealth -= 5;
+            }
+            else
+            {
+                mentalHealth += 10;
+            }
+        }
+
+        if(i == 15)
+        {
+            Time.timeScale = 0;
+            panelIdiomas.SetActive(true);
+        }
+
+        if(i == 16)
+        {
+            Time.timeScale = 1;
+            panelIdiomas.SetActive(false);
+        }
+
+        if(i >= 25 && i <= 27)
+        {
+            panelEnfasis.SetActive(true);            
+            enfasisTxt.SetText(consecuencias[i]);
+            Invoke("HideEnfasis", 3f);
+
+        }
+
+        if(i == 28)
+        {
+            panelEnfasis.SetActive(true);
+            enfasisTxt.SetText(consecuencias[i]);
+        }
+
         conseTxt.SetText(consecuencias[i]);
+    }
+
+    public void BotonInicio()
+    {
+        questions[0].SetActive(true);
+    }
+
+    private void HideEnfasis()
+    {
+        panelEnfasis.SetActive(false);
     }
 }

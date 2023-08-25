@@ -5,6 +5,7 @@ public class DecisionButton : MonoBehaviour
     public int mentalHealthChange;
     public int fatigueChange;
     public float averageChange;
+    public int nextQuestionIndex;
 
     public GameManager gameManager;
 
