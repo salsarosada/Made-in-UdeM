@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
-        PlayBackgroundMusic();
+        
 
         mentalHealthIcon.SetActive(false);
         motivationIcon.SetActive(false);
@@ -385,6 +385,7 @@ public class GameManager : MonoBehaviour
     {
         botonInicio.SetActive(false);
         questions[0].SetActive(true);
+        PlayBackgroundMusic();
 
         // Si estás en la última pregunta
         if (currentQuestionIndex == questions.Length - 1)
