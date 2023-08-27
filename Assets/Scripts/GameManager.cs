@@ -103,6 +103,9 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
+        // Si estás en la última pregunta, no hagas nada.
+        if (currentQuestionIndex == questions.Length - 1) return;
+
         if (!gameStarted) return;
         // Si ya se mostró el Canvas de tiempo agotado, no hacer nada.
         if (isTimeOut) return;
@@ -124,6 +127,13 @@ public class GameManager : MonoBehaviour
     {
         conseTxt.SetText("La vida es para los rápidos, los lentos se quedan");
         ShowTransition(-10, -10, 10, -0.5f); // Estos valores son un ejemplo. Ajusta según lo que desees.
+        if (currentQuestionIndex < questions.Length - 1)
+        {
+            currentQuestionIndex++;
+        }
+
+        // Verifica que solo la pregunta actual esté activa
+        VerifyActiveQuestion();
     }
 
     private void EmpeorarVariables()
@@ -197,19 +207,7 @@ public class GameManager : MonoBehaviour
     private void HideTransition()
     {
         transitionCanvas.SetActive(false);
-        if (currentQuestionIndex < questions.Length - 1)
-        {
-            currentQuestionIndex++;
-            questions[currentQuestionIndex].SetActive(true);
-
-            // Reinicia el temporizador y resetea la variable isTimeOut.
-            currentTime = decisionTime;
-            isTimeOut = false;
-        }
-        else
-        {
-            // Si no hay más preguntas, puedes hacer otra acción como mostrar una pantalla final.
-        }
+        // No hay necesidad de cambiar o activar/desactivar las preguntas aquí.
     }
 
     private IEnumerator ChangeQuestion(int nextQuestionIndex, float delay)
@@ -230,15 +228,27 @@ public class GameManager : MonoBehaviour
             // Aquí verificamos que solo la pregunta actual esté activa
             VerifyActiveQuestion();
 
-            // Reinicia el temporizador cada vez que se muestra una nueva pregunta.
-            currentTime = decisionTime;
-            isTimeOut = false;
+            // Si estás en la última pregunta, oculta las UI
+            if (currentQuestionIndex == questions.Length - 1)
+            {
+                HideUIElementsForFinalScene();
+            }
+            else
+            {
+                // Si no estás en la última pregunta, muestra las UI
+                ShowUIElements();
+
+                // Reinicia el temporizador cada vez que se muestra una nueva pregunta.
+                currentTime = decisionTime;
+                isTimeOut = false;
+            }
         }
         else
         {
             // Cambia a la escena final o cualquier otro comportamiento deseado.
         }
     }
+
     private void VerifyActiveQuestion()
     {
         for (int i = 0; i < questions.Length; i++)
@@ -370,20 +380,86 @@ public class GameManager : MonoBehaviour
     public void BotonInicio()
     {
         questions[0].SetActive(true);
-        SetIcons();
 
-        // Muestra la barra de tiempo y su fondo
+        // Si estás en la última pregunta
+        if (currentQuestionIndex == questions.Length - 1)
+        {
+            HideUIElementsForFinalScene();
+        }
+        else
+        {
+            SetIcons();
+
+            // Muestra la barra de tiempo y su fondo
+            timeBarFill.gameObject.SetActive(true);
+            timeBarBackground.SetActive(true);
+
+            // Establece que el juego ha comenzado
+            gameStarted = true;
+
+            // Inicia el temporizador al mostrar la primera pregunta.
+            currentTime = decisionTime;
+            isTimeOut = false;
+        }
+    }
+    private void ShowUIElements()
+    {
+        // Muestra los textos
+        mentalHealthText.gameObject.SetActive(true);
+        fatigueText.gameObject.SetActive(true);
+        motivationText.gameObject.SetActive(true);
+        averageText.gameObject.SetActive(true);
+
+        // Muestra las imágenes de estadísticas
+        mentalHealthImage.gameObject.SetActive(true);
+        averageImage.gameObject.SetActive(true);
+        fatigueImage.gameObject.SetActive(true);
+        motivationImage.gameObject.SetActive(true);
+        mentalHealthImageTrans.gameObject.SetActive(true);
+        averageImageTrans.gameObject.SetActive(true);
+        fatigueImageTrans.gameObject.SetActive(true);
+        motivationImageTrans.gameObject.SetActive(true);
+
+        // Muestra los iconos
+        mentalHealthIcon.SetActive(true);
+        motivationIcon.SetActive(true);
+        averageIcon.SetActive(true);
+        fatigueIcon.SetActive(true);
+
+        // Muestra la barra de tiempo
         timeBarFill.gameObject.SetActive(true);
         timeBarBackground.SetActive(true);
-
-        // Establece que el juego ha comenzado
-        gameStarted = true;
-
-        // Inicia el temporizador al mostrar la primera pregunta.
-        currentTime = decisionTime;
-        isTimeOut = false;
-
     }
+
+    private void HideUIElementsForFinalScene()
+    {
+        // Oculta los textos
+        mentalHealthText.gameObject.SetActive(false);
+        fatigueText.gameObject.SetActive(false);
+        motivationText.gameObject.SetActive(false);
+        averageText.gameObject.SetActive(false);
+
+        // Oculta las imágenes de estadísticas
+        mentalHealthImage.gameObject.SetActive(false);
+        averageImage.gameObject.SetActive(false);
+        fatigueImage.gameObject.SetActive(false);
+        motivationImage.gameObject.SetActive(false);
+        mentalHealthImageTrans.gameObject.SetActive(false);
+        averageImageTrans.gameObject.SetActive(false);
+        fatigueImageTrans.gameObject.SetActive(false);
+        motivationImageTrans.gameObject.SetActive(false);
+
+        // Oculta los iconos
+        mentalHealthIcon.SetActive(false);
+        motivationIcon.SetActive(false);
+        averageIcon.SetActive(false);
+        fatigueIcon.SetActive(false);
+
+        // Oculta la barra de tiempo
+        timeBarFill.gameObject.SetActive(false);
+        timeBarBackground.SetActive(false);
+    }
+
 
     private void HideEnfasis()
     {
