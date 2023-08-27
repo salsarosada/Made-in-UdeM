@@ -52,11 +52,14 @@ public class GameManager : MonoBehaviour
     private bool isTimeOut = false; // Indica si el tiempo se ha agotado.
 
     public Image timeBarFill;
+    private bool gameStarted = false;
+    public GameObject timeBarBackground;
 
 
 
     private void Start()
     {
+
         UpdateUI();
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -70,6 +73,8 @@ public class GameManager : MonoBehaviour
         averageIcon.SetActive(false);
         fatigueIcon.SetActive(false);
         currentTime = decisionTime; // Inicializa el temporizador.
+        timeBarFill.gameObject.SetActive(false);
+        timeBarBackground.SetActive(false);
 
 
     }
@@ -98,6 +103,7 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
+        if (!gameStarted) return;
         // Si ya se mostró el Canvas de tiempo agotado, no hacer nada.
         if (isTimeOut) return;
 
@@ -112,6 +118,7 @@ public class GameManager : MonoBehaviour
             ShowTimeOutCanvas();
             EmpeorarVariables();
         }
+
     }
     private void ShowTimeOutCanvas()
     {
@@ -135,7 +142,7 @@ public class GameManager : MonoBehaviour
         fatigueText.text = "Cansancio: " + fatigue;
         motivationText.text = motivation.ToString();
         averageText.text = "Promedio: " + average.ToString("F1"); // Mostramos el promedio con 1 decimal.
-       
+
 
         /*mentalHealthImage.fillAmount = mentalHealth / 100f;
         averageImage.fillAmount = average / 5f;
@@ -346,6 +353,13 @@ public class GameManager : MonoBehaviour
     {
         questions[0].SetActive(true);
         SetIcons();
+
+        // Muestra la barra de tiempo y su fondo
+        timeBarFill.gameObject.SetActive(true);
+        timeBarBackground.SetActive(true);
+
+        // Establece que el juego ha comenzado
+        gameStarted = true;
 
         // Inicia el temporizador al mostrar la primera pregunta.
         currentTime = decisionTime;
