@@ -218,13 +218,17 @@ public class GameManager : MonoBehaviour
 
         if (currentQuestionIndex < questions.Length)
         {
+            Debug.Log("Desactivando pregunta: " + currentQuestionIndex);
             questions[currentQuestionIndex].SetActive(false);
         }
 
         if (nextQuestionIndex < questions.Length)
         {
             currentQuestionIndex = nextQuestionIndex;
-            questions[currentQuestionIndex].SetActive(true);
+            Debug.Log("Activando pregunta: " + currentQuestionIndex);
+
+            // Aquí verificamos que solo la pregunta actual esté activa
+            VerifyActiveQuestion();
 
             // Reinicia el temporizador cada vez que se muestra una nueva pregunta.
             currentTime = decisionTime;
@@ -233,6 +237,20 @@ public class GameManager : MonoBehaviour
         else
         {
             // Cambia a la escena final o cualquier otro comportamiento deseado.
+        }
+    }
+    private void VerifyActiveQuestion()
+    {
+        for (int i = 0; i < questions.Length; i++)
+        {
+            if (i == currentQuestionIndex)
+            {
+                questions[i].SetActive(true);
+            }
+            else
+            {
+                questions[i].SetActive(false);
+            }
         }
     }
 
