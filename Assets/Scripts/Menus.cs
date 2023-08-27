@@ -1,33 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Menus : MonoBehaviour
 {
-    public GameObject botonInicio;
-    public GameObject pantallaGrande;
-    public GameObject medidores;
-    public GameObject primeraPregunta;
+    
+    public GameObject videoInicio;
+    public GameObject videoTutorial;
 
+
+    private int sceneIndex;
+    private float timer;
 
 
     void Start()
     {
-        
+        sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        timer = 0f;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if(sceneIndex == 0){
+            timer += Time.deltaTime;
+            print(timer);
+            if(timer >= 8f){
+                videoInicio.SetActive(false);
+                videoTutorial.SetActive(true);
+            }
+
+            if(timer >= 14f){
+                SceneManager.LoadScene(1);
+            } else {
+                return;
+            }
+
+        } else{
+            return;
+        }
+
+
     }
 
-    public void StartGame()
-    {
-        botonInicio.SetActive(false);
-        pantallaGrande.SetActive(true);
-        primeraPregunta.SetActive(true);
-        medidores.SetActive(true);
-    }
-
+  
 }

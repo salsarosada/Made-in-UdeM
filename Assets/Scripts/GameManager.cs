@@ -55,6 +55,10 @@ public class GameManager : MonoBehaviour
     private bool gameStarted = false;
     public GameObject timeBarBackground;
 
+    //Boton del inicio
+    public GameObject botonInicio;
+
+
 
 
     private void Start()
@@ -379,6 +383,7 @@ public class GameManager : MonoBehaviour
 
     public void BotonInicio()
     {
+        botonInicio.SetActive(false);
         questions[0].SetActive(true);
 
         // Si estás en la última pregunta
