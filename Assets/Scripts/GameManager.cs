@@ -72,10 +72,7 @@ public class GameManager : MonoBehaviour
         }
         
 
-        mentalHealthIcon.SetActive(false);
-        motivationIcon.SetActive(false);
-        averageIcon.SetActive(false);
-        fatigueIcon.SetActive(false);
+        SetOffIcons();
         currentTime = decisionTime; // Inicializa el temporizador.
         timeBarFill.gameObject.SetActive(false);
         timeBarBackground.SetActive(false);
@@ -197,6 +194,7 @@ public class GameManager : MonoBehaviour
         motivationChangeText.text = motivationChange.ToString();
 
         transitionCanvas.SetActive(true); // Mostrar el Canvas.
+        SetOffIcons();
 
         StartCoroutine(UpdateImageFill(mentalHealthImage, mentalHealth / 100f));
         StartCoroutine(UpdateImageFill(averageImage, average / 100f));
@@ -211,6 +209,7 @@ public class GameManager : MonoBehaviour
     private void HideTransition()
     {
         transitionCanvas.SetActive(false);
+        SetIcons();
         // No hay necesidad de cambiar o activar/desactivar las preguntas aquí.
     }
 
@@ -411,11 +410,11 @@ public class GameManager : MonoBehaviour
     private void ShowUIElements()
     {
         // Muestra los textos
-        mentalHealthText.gameObject.SetActive(true);
+        /* mentalHealthText.gameObject.SetActive(true);
         fatigueText.gameObject.SetActive(true);
         motivationText.gameObject.SetActive(true);
         averageText.gameObject.SetActive(true);
-
+ */
         // Muestra las imágenes de estadísticas
         mentalHealthImage.gameObject.SetActive(true);
         averageImage.gameObject.SetActive(true);
@@ -484,5 +483,13 @@ public class GameManager : MonoBehaviour
         motivationIcon.SetActive(true);
         averageIcon.SetActive(true);
         fatigueIcon.SetActive(true);
+    }
+
+     public void SetOffIcons()
+    {
+        mentalHealthIcon.SetActive(false);
+        motivationIcon.SetActive(false);
+        averageIcon.SetActive(false);
+        fatigueIcon.SetActive(false);
     }
 }
