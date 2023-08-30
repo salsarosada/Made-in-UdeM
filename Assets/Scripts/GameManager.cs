@@ -61,8 +61,10 @@ public class GameManager : MonoBehaviour
 
 
 
+
     private void Start()
     {
+
 
         UpdateUI();
         audioSource = GetComponent<AudioSource>();
@@ -70,7 +72,7 @@ public class GameManager : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
-        
+
 
         SetOffIcons();
         currentTime = decisionTime; // Inicializa el temporizador.
@@ -269,29 +271,31 @@ public class GameManager : MonoBehaviour
 
     private void PlayBackgroundMusic()
     {
-        int musicIndex = 0;
-        if (currentQuestionIndex < questions.Length / 3) // Primera tercera parte.
-        {
-            musicIndex = 0;
-        }
-        else if (currentQuestionIndex < (2 * questions.Length) / 3) // Segunda tercera parte.
-        {
-            musicIndex = 1;
-        }
-        else // Última tercera parte.
-        {
-            musicIndex = 2;
-        }
+        // Calcula el semestre actual dividiendo el índice de la pregunta actual entre 2
+        int currentSemester = currentQuestionIndex / 2;
 
-        if (backgroundMusics.Length > musicIndex && backgroundMusics[musicIndex] != null)
+        // Verifica si el índice del semestre está dentro del rango de la matriz de audios
+        if (currentSemester < backgroundMusics.Length && backgroundMusics[currentSemester] != null)
         {
-            audioSource.clip = backgroundMusics[musicIndex];
-            if (!audioSource.isPlaying)
+            // Si el clip de audio actualmente en reproducción no es el que corresponde al semestre actual, cambia el clip
+            if (audioSource.clip != backgroundMusics[currentSemester])
+            {
+                audioSource.clip = backgroundMusics[currentSemester];
+                audioSource.Play();
+            }
+            // Si el clip de audio actualmente en reproducción es el mismo que el del semestre actual, no hagas nada
+            else if (audioSource.isPlaying)
+            {
+                return;
+            }
+            // Si no se está reproduciendo ningún clip, simplemente inicia la reproducción
+            else
             {
                 audioSource.Play();
             }
         }
     }
+
 
     private IEnumerator UpdateImageFill(Image image, float targetFill)
     {
@@ -382,6 +386,8 @@ public class GameManager : MonoBehaviour
 
     public void BotonInicio()
     {
+
+
         botonInicio.SetActive(false);
         questions[0].SetActive(true);
         PlayBackgroundMusic();
@@ -485,7 +491,7 @@ public class GameManager : MonoBehaviour
         fatigueIcon.SetActive(true);
     }
 
-     public void SetOffIcons()
+    public void SetOffIcons()
     {
         mentalHealthIcon.SetActive(false);
         motivationIcon.SetActive(false);

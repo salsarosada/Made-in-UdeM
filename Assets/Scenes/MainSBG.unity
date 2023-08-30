@@ -412,7 +412,14 @@ MonoBehaviour:
   motivationChangeText: {fileID: 763768671}
   fatigueChangeText: {fileID: 1567232267}
   averageChangeText: {fileID: 252552948}
-  backgroundMusics: []
+  backgroundMusics:
+  - {fileID: 8300000, guid: 9c48c1ac135cda648a2a372090fd7662, type: 3}
+  - {fileID: 8300000, guid: 35639bdd3044e5f40b4ba3260e5fd001, type: 3}
+  - {fileID: 8300000, guid: f86226894c274114f897ff0a3f0096aa, type: 3}
+  - {fileID: 8300000, guid: 85bac1a1852810f42bbc1ae0f0dc364b, type: 3}
+  - {fileID: 8300000, guid: 0c9898a9f1bb9ec47898a79e6655830c, type: 3}
+  - {fileID: 8300000, guid: 4ef13ff542d5a17478ca1754c85243f4, type: 3}
+  - {fileID: 8300000, guid: 0eb9ad74566732c419fb570d4c0feb76, type: 3}
   mentalHealthImage: {fileID: 1245488080}
   averageImage: {fileID: 1377484622}
   fatigueImage: {fileID: 1718039279}
